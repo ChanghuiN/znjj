@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 电灯 -->
+    <item name="iv_light" type="id"/>
+    <item name="iv_bar" type="id"/>
+    <item name="iv_addL" type="id"/>
+    <item name="iv_redL" type="id"/>
+
+    <!-- 空调 -->
+    <item name="iv_con" type="id"/>
+    <item name="iv_addT" type="id"/>
+    <item name="iv_redT" type="id"/>
+    <item name="iv_switch" type="id"/>
+    <item name="tv_auto" type="id"/>
+    <item name="tv_refri" type="id"/>
+    <item name="tv_dehum" type="id"/>
+    <item name="tv_blow" type="id"/>
+    <item name="tv_heat" type="id"/>
+</resources>
