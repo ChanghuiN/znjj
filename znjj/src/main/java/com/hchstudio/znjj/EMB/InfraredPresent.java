@@ -1,9 +1,12 @@
 package com.hchstudio.znjj.EMB;
 
 import android.content.Context;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.util.Log;
 
 import com.hchstudio.znjj.AppInterface;
+import com.hchstudio.znjj.R;
 import com.hchstudio.znjj.net.HttpClient;
 import com.hchstudio.znjj.utils.SPUtils;
 
@@ -15,11 +18,14 @@ public class InfraredPresent extends NodePresent {
 
     private static final String TAG = "InfraredPresent";
 
+    private SoundPool mSoundPool;
+
     boolean mSensorEnable = true;
 //    boolean mSensorAlarm = false;
 
     public InfraredPresent(Node n) {
         super(n);
+        mSoundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 5);
     }
 
     @Override
@@ -72,36 +78,44 @@ public class InfraredPresent extends NodePresent {
                     break;
                 case 0x0402:
                     if (dat[i + 2] != 0) {
-					/* 报警 */
+                    /* 报警 */
 //                        mSensorAlarm = true;
                         // String msg = this.mNode.mNetAddr + ":检测到入侵";
 //                        if (mAlarmCheckBox.isChecked()) {
 						/* 发送告警通知和短信 */
-                            String msg = this.mNode.mNetAddr + ":检测到入侵";
+                        String msg = this.mNode.mNetAddr + ":检测到入侵";
                         Log.i(TAG, "procAppMsgData: " + msg);
-                        String dev_id = (String) SPUtils.get(context,"dev_id","");
+                        String dev_id = (String) SPUtils.get(context, "dev_id", "");
                         new HttpClient.Builder<String>()
                                 .url(AppInterface.setSECENE)
                                 .post()
-                                .addParams("znjj_id",dev_id)
-                                .addParams("type","sendWarn")
+                                .addParams("znjj_id", dev_id)
+                                .addParams("type", "sendWarn")
                                 .addParams("data", "检测到非法入侵")
                                 .builder()
                                 .execute();
+                        mSoundPool.load(context, R.raw.bj, 1);
+                        mSoundPool.pause(1);
+                        mSoundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+                            @Override
+                            public void onLoadComplete(SoundPool soundPool, int i, int i1) {
+                                mSoundPool.play(1, 1, 1, 0, 0, 2);
+                            }
+                        });
 //                            Tool.notify("入侵告警", msg);
 //                            Tool.playAlarm(3);
-                            // mAlarmNumber =
-                            // (mAlarmNumberEditText.getText().toString());
-                            // if (mAlarmNumber != null && mAlarmNumber.length()>0)
-                            // {
-                            // Tool.sendShortMessage(mAlarmNumber, msg);
-                            // }
-                        }
                         // mAlarmNumber =
                         // (mAlarmNumberEditText.getText().toString());
-                        // if (mAlarmNumber != null && mAlarmNumber.length()>0) {
+                        // if (mAlarmNumber != null && mAlarmNumber.length()>0)
+                        // {
                         // Tool.sendShortMessage(mAlarmNumber, msg);
                         // }
+                    }
+                    // mAlarmNumber =
+                    // (mAlarmNumberEditText.getText().toString());
+                    // if (mAlarmNumber != null && mAlarmNumber.length()>0) {
+                    // Tool.sendShortMessage(mAlarmNumber, msg);
+                    // }
 //                    } else {
 //                        mSensorAlarm = false;
 //                    }

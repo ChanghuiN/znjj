@@ -202,7 +202,7 @@ public class ConDialog extends Dialog implements View.OnClickListener {
                                 e.printStackTrace();
                             }
                             swi = true;
-                            mNodePresent.procData(InfrarConPresent.SETING_NUM,27);
+                            mNodePresent.procData(InfrarConPresent.SETING_NUM,44);
                             iv_contr = new InfraConView(mContext,mTemp,InfrarConPresent.MODEL_HEAT);
                             iv_contr.setId(R.id.iv_con);
                             RelativeLayout.LayoutParams lp_iv_con = new RelativeLayout.LayoutParams(330,250);

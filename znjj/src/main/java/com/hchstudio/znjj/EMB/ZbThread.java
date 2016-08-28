@@ -146,7 +146,7 @@ public class ZbThread extends Thread implements ZbProx.ZbProxCallBack {
 			Log.i("ZbThread", "child-"+i+"---"+ ETool.byteTostring(ninfo));
 			if (ninfo == null || ninfo.length < 29) {
 				Log.d(TAG, "**** get node " + cli[i] + " info fail.");
-				return;
+				continue;
 			}
 
 			Node nd = new Node(cli[i], Node.ZB_NODE_TYPE_ENDDEVICE, ninfo);

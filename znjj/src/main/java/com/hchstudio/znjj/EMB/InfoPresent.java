@@ -1,6 +1,7 @@
 package com.hchstudio.znjj.EMB;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.hchstudio.znjj.AppInterface;
@@ -65,18 +66,6 @@ public class InfoPresent extends NodePresent {
 
         //温湿度超标报警
         String dev_id = (String) SPUtils.get(context,"dev_id","");
-        if (THIValue1 > 30) {
-            String msg = this.mNode.mNetAddr + ":温度超出正常值";
-            Log.i(TAG, "procAppMsgData: " + msg);
-            new HttpClient.Builder<String>()
-                    .url(AppInterface.setSECENE)
-                    .post()
-                    .addParams("znjj_id", dev_id)
-                    .addParams("type", "sendWarn")
-                    .addParams("data", "当前温度为"+ THIValue1 +"℃,已超出正常值")
-                    .builder()
-                    .execute();
-        }
 
         String humiture = (String) SPUtils.get(context, "dev_humiture", "");
         Log.i(TAG, "humiture---" + humiture + "id---" + SPUtils.get(context, "dev_id", "").toString());
@@ -150,6 +139,20 @@ public class InfoPresent extends NodePresent {
                     .addParams("znjj_id",dev_id)
                     .addParams("type","dev_humiture")
                     .addParams("data", jo.toString())
+                    .builder()
+                    .execute();
+        }
+
+        if (THIValue1 > 30) {
+            String msg = this.mNode.mNetAddr + ":温度超出正常值";
+            Log.i(TAG, "procAppMsgData: " + msg);
+            SystemClock.sleep(2000);
+            new HttpClient.Builder<String>()
+                    .url(AppInterface.setSECENE)
+                    .post()
+                    .addParams("znjj_id", dev_id)
+                    .addParams("type", "sendWarn")
+                    .addParams("data", "当前温度为"+ THIValue1 +"℃,已超出正常值")
                     .builder()
                     .execute();
         }

@@ -125,7 +125,7 @@ public class ZbProx implements ZbLink.ConnectListener {
 		synchronized (mRequestLock) {
 			Log.d(TAG, "**********begin wait ****************");
 			try {
-				mRequestLock.wait(40 * 1000);
+				mRequestLock.wait(4 * 1000);
 			} catch (InterruptedException e) {
 				Log.d(TAG,
 						"**************wait response data timeout................");
@@ -168,8 +168,7 @@ public class ZbProx implements ZbLink.ConnectListener {
 			data[0] = (byte) (ep & 0xff); // ep值很小
 			for (int i = 0; i < dat.length; i++)
 				data[i + 1] = dat[i];
-			ret = mRequestLock.request(SYS_APP_MSG, SYS_APP_MSG_RESPONSE,
-					0x6980, data);
+			ret = mRequestLock.request(SYS_APP_MSG, SYS_APP_MSG_RESPONSE, 0x6980, data);
 			if (ret != 0) {
 				Log.d(TAG, "syncRequestSYS_GET_DEVICE_INFO:fail...");
 				return null;
